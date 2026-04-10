@@ -23,6 +23,8 @@ from .alpha_vantage import (
     get_global_news as get_alpha_vantage_global_news,
 )
 from .alpha_vantage_common import AlphaVantageRateLimitError
+from .bridgewise_fundamentals import get_fundamentals as get_bridgewise_fundamentals
+from .reddit_sentiment import get_reddit_sentiment, get_news as get_reddit_news
 
 # Configuration and routing logic
 from .config import get_config
@@ -56,6 +58,7 @@ TOOLS_CATEGORIES = {
             "get_news",
             "get_global_news",
             "get_insider_transactions",
+            "get_reddit_sentiment",
         ]
     }
 }
@@ -63,6 +66,8 @@ TOOLS_CATEGORIES = {
 VENDOR_LIST = [
     "yfinance",
     "alpha_vantage",
+    "bridgewise",
+    "reddit",
 ]
 
 # Mapping of methods to their vendor-specific implementations
@@ -79,6 +84,7 @@ VENDOR_METHODS = {
     },
     # fundamental_data
     "get_fundamentals": {
+        "bridgewise": get_bridgewise_fundamentals,
         "alpha_vantage": get_alpha_vantage_fundamentals,
         "yfinance": get_yfinance_fundamentals,
     },
@@ -98,6 +104,10 @@ VENDOR_METHODS = {
     "get_news": {
         "alpha_vantage": get_alpha_vantage_news,
         "yfinance": get_news_yfinance,
+        "reddit": get_reddit_news,
+    },
+    "get_reddit_sentiment": {
+        "reddit": get_reddit_sentiment,
     },
     "get_global_news": {
         "yfinance": get_global_news_yfinance,
