@@ -22,9 +22,11 @@ def create_portfolio_manager(llm, memory):
         for i, rec in enumerate(past_memories, 1):
             past_memory_str += rec["recommendation"] + "\n\n"
 
-        prompt = f"""As the Portfolio Manager, synthesize the risk analysts' debate and deliver the final trading decision.
+        prompt = f"""You are the Portfolio Manager. Look at what all the analysts found and give a clear trading decision.
 
 {instrument_context}
+
+Write in simple, conversational English. No financial jargon. Explain like you're texting a friend who asks "should I buy this stock?". Keep it under 300 words.
 
 ---
 
@@ -36,14 +38,16 @@ def create_portfolio_manager(llm, memory):
 - **Sell**: Exit position or avoid entry
 
 **Context:**
-- Research Manager's investment plan: **{research_plan}**
-- Trader's transaction proposal: **{trader_plan}**
-- Lessons from past decisions: **{past_memory_str}**
+- Research plan: **{research_plan}**
+- Trader's proposal: **{trader_plan}**
+- Past lessons: **{past_memory_str}**
 
 **Required Output Structure:**
 1. **Rating**: State one of Buy / Overweight / Hold / Underweight / Sell.
-2. **Executive Summary**: A concise action plan covering entry strategy, position sizing, key risk levels, and time horizon.
-3. **Investment Thesis**: Detailed reasoning anchored in the analysts' debate and past reflections.
+2. **Executive Summary**: 2-3 short sentences. What should we do and why? No jargon.
+3. **Investment Thesis**: Use bullet points. Keep each point to one short sentence. What are the key reasons for this call?
+4. **Data Sources Used:** List what was checked — e.g. news, Reddit/social sentiment, fundamentals, market price data, analyst debate.
+5. **Bottom Line:** One sentence in plain English. Format: "Bottom Line: [BUY/SELL/HOLD] because [reason]."
 
 ---
 
@@ -52,7 +56,7 @@ def create_portfolio_manager(llm, memory):
 
 ---
 
-Be decisive and ground every conclusion in specific evidence from the analysts.{get_language_instruction()}"""
+Short sentences. Bullet points over paragraphs. If something is risky, just say "it's risky." If the numbers look good, say "the numbers look good." Be direct.{get_language_instruction()}"""
 
         response = llm.invoke(prompt)
 
