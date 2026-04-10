@@ -25,6 +25,12 @@ from .alpha_vantage import (
 from .alpha_vantage_common import AlphaVantageRateLimitError
 from .bridgewise_fundamentals import get_fundamentals as get_bridgewise_fundamentals
 from .reddit_sentiment import get_reddit_sentiment, get_news as get_reddit_news
+from .finnhub_data import (
+    get_news as get_finnhub_news,
+    get_global_news as get_finnhub_global_news,
+    get_fundamentals as get_finnhub_fundamentals,
+    get_insider_transactions as get_finnhub_insider_transactions,
+)
 
 # Configuration and routing logic
 from .config import get_config
@@ -68,6 +74,7 @@ VENDOR_LIST = [
     "alpha_vantage",
     "bridgewise",
     "reddit",
+    "finnhub",
 ]
 
 # Mapping of methods to their vendor-specific implementations
@@ -85,6 +92,7 @@ VENDOR_METHODS = {
     # fundamental_data
     "get_fundamentals": {
         "bridgewise": get_bridgewise_fundamentals,
+        "finnhub": get_finnhub_fundamentals,
         "alpha_vantage": get_alpha_vantage_fundamentals,
         "yfinance": get_yfinance_fundamentals,
     },
@@ -102,6 +110,7 @@ VENDOR_METHODS = {
     },
     # news_data
     "get_news": {
+        "finnhub": get_finnhub_news,
         "alpha_vantage": get_alpha_vantage_news,
         "yfinance": get_news_yfinance,
         "reddit": get_reddit_news,
@@ -110,10 +119,12 @@ VENDOR_METHODS = {
         "reddit": get_reddit_sentiment,
     },
     "get_global_news": {
+        "finnhub": get_finnhub_global_news,
         "yfinance": get_global_news_yfinance,
         "alpha_vantage": get_alpha_vantage_global_news,
     },
     "get_insider_transactions": {
+        "finnhub": get_finnhub_insider_transactions,
         "alpha_vantage": get_alpha_vantage_insider_transactions,
         "yfinance": get_yfinance_insider_transactions,
     },
