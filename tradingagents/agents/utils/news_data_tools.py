@@ -51,3 +51,17 @@ def get_insider_transactions(
         str: A report of insider transaction data
     """
     return route_to_vendor("get_insider_transactions", ticker)
+
+@tool
+def get_reddit_sentiment(
+    ticker: Annotated[str, "Ticker symbol"],
+) -> str:
+    """
+    Retrieve Reddit sentiment analysis for a given ticker symbol.
+    Scans r/wallstreetbets, r/stocks, r/investing, r/stockmarket for recent discussions.
+    Args:
+        ticker (str): Ticker symbol
+    Returns:
+        str: A formatted string containing Reddit sentiment data
+    """
+    return route_to_vendor("get_reddit_sentiment", ticker)
